@@ -32,11 +32,11 @@ from typing import Final, Literal, NamedTuple, TextIO
 
 from cmk.utils.metrics import MetricName
 
-from cmk.gui.graphing._color import color_to_rgb, RGB  # pylint: disable=cmk-module-layer-violation
+from cmk.gui.graphing._parser import color_to_rgb, RGB  # pylint: disable=cmk-module-layer-violation
 from cmk.gui.graphing._perfometer import (  # pylint: disable=cmk-module-layer-violation
     _DualPerfometerSpec,
     _LinearPerfometerSpec,
-    _LogarithmicPerfometerSpec,
+    LogarithmicPerfometerSpec,
     _StackedPerfometerSpec,
     PerfometerSpec,
 )
@@ -336,7 +336,7 @@ def _collect_metric_names_from_legacy_linear_perfometer(
 
 
 def _collect_metric_names_from_legacy_logarithmic_perfometer(
-    legacy_perfometer: _LogarithmicPerfometerSpec,
+    legacy_perfometer: LogarithmicPerfometerSpec,
 ) -> CheckedExpression:
     return _collect_metric_names_of_expression(legacy_perfometer["metric"])
 
@@ -1321,7 +1321,7 @@ def _compute_border85(half_value: int | float) -> int:
 
 def _parse_legacy_logarithmic_perfometer(
     unit_parser: UnitParser,
-    legacy_logarithmic_perfometer: _LogarithmicPerfometerSpec,
+    legacy_logarithmic_perfometer: LogarithmicPerfometerSpec,
 ) -> perfometers.Perfometer:
     segments = [_parse_expression(unit_parser, legacy_logarithmic_perfometer["metric"], "")]
     return perfometers.Perfometer(
